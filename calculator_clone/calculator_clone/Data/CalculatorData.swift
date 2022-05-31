@@ -24,7 +24,13 @@ enum Calculator: CaseIterable {
 }
 
 extension Calculator {
-    var value: String {
+    enum CalulatorType {
+        case number
+        case oper
+        case etc
+    }
+        
+    var text: String {
         switch self {
         case .one:
             return "1"
@@ -66,7 +72,7 @@ extension Calculator {
             return "."
         }
     }
-    
+
     var backgroundColor: Color {
         switch self {
         case .one:
@@ -109,7 +115,7 @@ extension Calculator {
             return Color.numberBackColor
         }
     }
-    
+
     var textColor: Color {
         switch self {
         case .one:
@@ -150,6 +156,49 @@ extension Calculator {
             return Color.whiteColor
         case .point:
             return Color.whiteColor
+        }
+    }
+    
+    var type: CalulatorType {
+        switch self {
+        case .one:
+            return .number
+        case .two:
+            return .number
+        case .three:
+            return .number
+        case .four:
+            return .number
+        case .five:
+            return .number
+        case .six:
+            return .number
+        case .seven:
+            return .number
+        case .eight:
+            return .number
+        case .nine:
+            return .number
+        case .zero:
+            return .number
+        case .AC:
+            return .etc
+        case .plusMinus:
+            return .oper
+        case .percent:
+            return .oper
+        case .division:
+            return .oper
+        case .multiplication:
+            return .oper
+        case .plus:
+            return .oper
+        case .minus:
+            return .oper
+        case .equal:
+            return .etc
+        case .point:
+            return .etc
         }
     }
 }
