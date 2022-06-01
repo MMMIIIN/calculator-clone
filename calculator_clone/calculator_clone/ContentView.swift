@@ -3,11 +3,11 @@ import SwiftUI
 struct ContentView: View {
     private static let initialColumns = 4
     @State private var gridColumns = Array(repeating: GridItem(.flexible()), count: initialColumns)
-    var item = GridItem(.flexible(minimum: 30, maximum: 30))
     @State private var isOper: Bool = false
     @State private var isPlus: Bool = false
     @State private var result: String = "0"
-    @State private var resultArr: [String] = []
+    @State private var operList: [Calculator] = []
+    @State private var tempResult: String = ""
 
     var body: some View {
         GeometryReader { geo in
@@ -68,19 +68,15 @@ struct ContentView: View {
         if result == "0" {
             result = ""
             result += value.text
-            resultArr.append(value.text)
-            print(resultArr)
+            tempResult += value.text
         } else if value.type == .number {
             result += value.text
-            resultArr.append(value.text)
-            print(resultArr)
+            tempResult += value.text
         } else if value.type == .oper {
             operating(value: value)
-            resultArr.append(value.text)
-            print(resultArr)
+            tempResult += value.text
         } else if value.type == .etc {
             etc(value: value)
-            print(resultArr)
         }
     }
 
@@ -89,42 +85,53 @@ struct ContentView: View {
             isPlus = true
             isOper = true
             print("isPlus")
-
+            operList.append(.plus)
         } else if value == .minus {
-
+            isOper = true
         } else if value == .multiplication {
-
+            isOper = true
         } else if value == .division {
-
+            isOper = true
         }
     }
 
     func etc(value: Calculator) {
         if value == .AC {
             result = "0"
-            resultArr.removeAll()
+            tempResult = ""
         } else if value == .equal {
             let getResult = getEqual()
             result = String(getResult)
-            resultArr.removeAll()
-            resultArr.append(result)
+            tempResult = ""
+            tempResult += result
         }
     }
 
     func getEqual() -> Int {
         var result = 0
-        let testArr = resultArr.split(separator: "+")
-        var stringAsIntArr: [String] = []
-        for index in testArr {
-            var temp = ""
-            for i in index {
-                temp += i
+        let separators = CharacterSet(charactersIn: " ")
+        let tempList = tempResult.components(separatedBy: separators)
+        for index in 0..<tempList.count {
+            if tempList[index] == "+" {
+                let castingInt = Int(tempList[index + 1])
+                result += castingInt!
+                break;
+            } else if tempList[index] == "-" {
+                let castingInt = Int(tempList[index + 1])
+                result -= castingInt!
+                break;
+            } else if tempList[index] == "÷" {
+                let castingInt = Int(tempList[index + 1])
+                result /= castingInt!
+                break;
+            } else if tempList[index] == "×" {
+                let castingInt = Int(tempList[index + 1])
+                result *= castingInt!
+                break;
+            } else {
+                let castingInt = Int(tempList[index])
+                result += castingInt!
             }
-            stringAsIntArr.append(temp)
-        }
-        for index in stringAsIntArr {
-            let castingInt = Int(index)
-            result += castingInt!
         }
         return result
     }

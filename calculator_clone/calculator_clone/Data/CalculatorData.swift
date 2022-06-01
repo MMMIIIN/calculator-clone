@@ -59,13 +59,13 @@ extension Calculator {
         case .percent:
             return "%"
         case .division:
-            return "÷"
+            return " ÷ "
         case .multiplication:
-            return "×"
+            return " × "
         case .plus:
-            return "+"
+            return " + "
         case .minus:
-            return "-"
+            return " - "
         case .equal:
             return "="
         case .point:
